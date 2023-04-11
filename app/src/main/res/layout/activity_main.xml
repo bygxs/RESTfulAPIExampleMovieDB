@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingVertical="20dp"
+    android:layout_gravity="center"
     tools:context=".MainActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"
+        tools:text="Title"
+        android:textSize="24sp"
+        android:layout_marginVertical="10dp"
+        />
+
 
     <ImageView
         android:layout_width="wrap_content"
@@ -17,6 +31,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="45dp" />
+
+    <EditText
+       android:paddingVertical="20dp"
+        android:id="@+id/et_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Title"/>
 
     <Button
         android:id="@+id/btn_get_movie"

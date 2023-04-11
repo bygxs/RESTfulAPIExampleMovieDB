@@ -18,5 +18,11 @@ interface MovieAPIService {
         @Query("api_key") query: String
     ): Response<JsonObject>
 
+    @GET("search/movie")
+    suspend fun searchByTitle(
+       @Query("api_key") apiKey: String,
+        @Query("query") query: String
+    ): Response<JsonObject>
+
 
 }

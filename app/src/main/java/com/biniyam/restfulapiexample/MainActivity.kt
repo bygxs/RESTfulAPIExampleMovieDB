@@ -5,12 +5,14 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.biniyam.restfulapiexample.databinding.ActivityMainBinding
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import retrofit2.http.Query
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,20 +27,24 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
            imageBaseUrl = getImageBasUrlFromConfig()
-           print("imageBaseUrl = ${imageBaseUrl}")
+           println("imageBaseUrl = ${imageBaseUrl}")
         }
 
 
         binding.btnGetMovie.setOnClickListener {
+            val movieId = 550
+            val query = binding.etQuery.text.toString()
 
-            val movieId = 500
             CoroutineScope(Dispatchers.Main).launch {
-                val movie = getMovieDetails(movieId)
-                println("movie = ${movie}")
-               loadImage(movie.imagePath)
-             //   runOnUiThread{
-                    binding.tvMovieDetails.text = movie.toString()
-             //   }
+                //val movie = getMovieDetails(movieId)
+               // println("movie = ${movie}")
+
+           val movie = getMovieFromSearch(query)
+
+                 loadImage(movie.imagePath)
+                 binding.tvMovieDetails.text = movie.overview
+                binding.tvTitle.text = movie.title
+
             }
         }
     }
@@ -70,7 +76,7 @@ class MainActivity : AppCompatActivity() {
        val imageSize = response
            ?.getAsJsonObject("images")
            ?.getAsJsonArray("poster_sizes")
-           ?.get(2)?.asString
+           ?.get(4)?.asString
        println(imageBaseUrl+imageSize)
        return imageBaseUrl + imageSize
 
@@ -95,5 +101,26 @@ class MainActivity : AppCompatActivity() {
 
         }.start()
     }
+
+   suspend fun getMovieFromSearch(query: String): MovieModel{
+       val retrofit = Retrofit.Builder()
+           .baseUrl(getString(R.string.BASE_URL))
+           .addConverterFactory(GsonConverterFactory.create())
+           .build()
+
+       val movieAPIService = retrofit.create(MovieAPIService::class.java)
+
+       val response = movieAPIService.searchByTitle(getString(R.string.api_key),query).body() //.code(),.header()
+       println("movieJson = ${response}")
+       val movieJson = response?.getAsJsonArray("results")?.get(0)
+       println("movieJson = ${movieJson}")
+
+       val gson = Gson()
+       val movie = gson.fromJson(movieJson, MovieModel::class.java)
+       println("movie objekt = ${movie}")
+
+       return movie
+
+   }
 
     }
