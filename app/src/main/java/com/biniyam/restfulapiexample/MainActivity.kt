@@ -28,6 +28,11 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val movie = getMovieDetails(movieId)
                 println("movie = ${movie}")
+
+                runOnUiThread{
+                    binding.tvMovieDetails.text = movie.toString()
+                }
+
             }
         }
     }
