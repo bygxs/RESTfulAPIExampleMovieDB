@@ -9,5 +9,4 @@ data class MovieModel (
     val overview: String,
     @SerializedName("poster_path")val imagePath: String
 
-    ) {
-}
+    )
