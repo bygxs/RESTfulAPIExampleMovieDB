@@ -1,5 +1,7 @@
 package com.biniyam.restfulapiexample
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.biniyam.restfulapiexample.databinding.ActivityMainBinding
@@ -21,21 +23,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        CoroutineScope(Dispatchers.Main).launch {
-            imageBaseUrl = getImageBasUrlFromConfig()
+        CoroutineScope(Dispatchers.IO).launch {
+           imageBaseUrl = getImageBasUrlFromConfig()
+           print("imageBaseUrl = ${imageBaseUrl}")
         }
 
 
         binding.btnGetMovie.setOnClickListener {
 
             val movieId = 500
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 val movie = getMovieDetails(movieId)
                 println("movie = ${movie}")
-
-                runOnUiThread{
+               loadImage(movie.imagePath)
+             //   runOnUiThread{
                     binding.tvMovieDetails.text = movie.toString()
-                }
+             //   }
             }
         }
     }
@@ -69,9 +72,28 @@ class MainActivity : AppCompatActivity() {
            ?.getAsJsonArray("poster_sizes")
            ?.get(2)?.asString
        println(imageBaseUrl+imageSize)
-
        return imageBaseUrl + imageSize
 
       }
+
+    fun loadImage(imageUrl: String) {
+        var image: Bitmap? = null
+        Thread {
+            val imageUrl = imageBaseUrl + imageUrl
+
+            try {
+                val inStream = java.net.URL(imageUrl).openStream()
+                image = BitmapFactory.decodeStream(inStream)
+                runOnUiThread {
+                    binding.ivPoster.setImageBitmap(image)
+                }
+
+            } catch (e: Exception) {
+                println("Error Loading image")
+                e.printStackTrace()
+            }
+
+        }.start()
+    }
 
     }
