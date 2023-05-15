@@ -2,8 +2,8 @@ package com.biniyam.restfulapiexample
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.biniyam.restfulapiexample.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -11,8 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import retrofit2.http.Query
 
 
 class MainActivity : AppCompatActivity() {

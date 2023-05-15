@@ -3,4 +3,8 @@
     <string name="get_movie">Get Movie</string>
     <string name="api_key">7af814fc3c78258f806dc907abf0d699</string>
     <string name="BASE_URL">https://api.themoviedb.org/3/</string>
+    <string name="title">Title</string>
+    <string name="moviedetailes">moviedetailes</string>
+    <string name="actual_title">actual title</string>
+    <string name="search_movie_title_here">search movie title here</string>
 </resources>
